@@ -12,8 +12,17 @@ if db_url is None:
     raise RuntimeError("Переменная окружения не задана")
 
 engine = create_engine(db_url)
-session = sessionmaker(engine)
-
+sessionLocal = sessionmaker(engine)
 
 class Base(DeclarativeBase):
     pass
+
+
+def get_session():
+    with sessionLocal() as session:
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
