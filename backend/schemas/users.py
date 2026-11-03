@@ -6,3 +6,11 @@ class CreateUserSchema(BaseModel):
     department: str = Field(min_length=1)
 
     model_config = base_config
+
+
+class UserResponseSchema(BaseModel):
+    id: int
+    username: str
+    department: str
+
+    model_config = base_config

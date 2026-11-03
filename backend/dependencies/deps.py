@@ -1,3 +1,4 @@
+from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
@@ -15,3 +16,6 @@ def get_user_service(session: Session = Depends(get_session)) -> UserService:
 
 def get_task_service(session: Session = Depends(get_session)) -> TaskService:
     return TaskService(SqlAlchemyTaskRepository(session))
+
+UserServiceDep = Annotated[UserService, Depends(get_user_service)]
+TaskServiceDep = Annotated[TaskService, Depends(get_task_service)]
