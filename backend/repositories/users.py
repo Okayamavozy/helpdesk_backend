@@ -7,7 +7,7 @@ class SqlAlchemyUserRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get_all(self) -> list[UserEntity] | None:
+    def get_all(self) -> list[UserEntity]:
         result = select(UserEntity).order_by(UserEntity.id)
         return list(self.session.scalars(result).all())
 
@@ -15,7 +15,11 @@ class SqlAlchemyUserRepository:
         result = select(UserEntity).where(UserEntity.id == user_id)
         return self.session.scalars(result).one_or_none()
 
-    def create(self, user: UserEntity) -> UserEntity:
+    def create(self, username: str, department: str) -> UserEntity:
+        user = UserEntity(
+            username = username,
+            department = department
+        )
         self.session.add(user)
         self.session.flush()
         return user
