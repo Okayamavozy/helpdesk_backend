@@ -1,6 +1,6 @@
 from backend.repositories.tasks import SqlAlchemyTaskRepository
 from backend.schemas.tasks import CreateTaskSchema
-from backend.models.tasks import TaskEntity, TaskStatuses
+from backend.models.tasks import TaskEntity, TaskStatuses, TaskCategories
 
 from backend.validations.errors import NotFoundError
 
@@ -29,5 +29,8 @@ class TaskService:
             raise NotFoundError(f"Задача с {task_id} не найдена")
         return task
 
-    def return_statuses(self) -> list[TaskStatuses]:
-        return list(TaskStatuses)
+    def return_statuses(self) -> dict[str, str]:
+        return { status.name: status.value for status in TaskStatuses }
+
+    def return_categories(self) -> dict[str, str]:
+        return { category.name: category.value for category in TaskCategories}

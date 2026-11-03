@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 from backend.config.schema_config import base_config
 
 class CreateUserSchema(BaseModel):

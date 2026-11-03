@@ -1,10 +1,5 @@
-from fastapi import Depends, APIRouter, status
-
-from backend.dependencies.deps import get_user_service
-
+from fastapi import APIRouter, status
 from backend.schemas.users import CreateUserSchema, UserResponseSchema
-from backend.services.users import UserService
-
 from backend.dependencies.deps import UserServiceDep
 
 router = APIRouter(prefix="/users", tags=["Users"])

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 from backend.config.schema_config import base_config
 from backend.models.tasks import TaskCategories, TaskStatuses
@@ -12,8 +12,20 @@ class CreateTaskSchema(BaseModel):
     model_config = base_config
 
 
-class ChangeStatusSchema(BaseModel):
+class ChangeTaskStatusSchema(BaseModel):
     task_id: int = Field(gt=0)
     status: TaskStatuses
+
+    model_config = base_config
+
+
+class TaskResponseSchema(BaseModel):
+    id: int
+    title: str
+    status: TaskStatuses
+    category: TaskCategories
+    description: str
+    author_id: int
+    executor_id: int | None = None
 
     model_config = base_config

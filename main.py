@@ -9,6 +9,7 @@ from backend.models.tasks import TaskEntity
 from backend.models.users import UserEntity
 
 from backend.routers.users import router as users_router
+from backend.routers.tasks import router as tasks_router
 
 from backend.middlewares.middleware import ExceptionHandlerMiddleware
 
@@ -21,6 +22,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="HelpDeskAPI", lifespan=lifespan)
 
 app.include_router(users_router)
+app.include_router(tasks_router)
 
 app.add_middleware(ExceptionHandlerMiddleware)
 
