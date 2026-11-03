@@ -17,8 +17,8 @@ class UserService:
             raise NotFoundError("Пользователей не существует")
         return users
 
-    def get_by_user_id(self, user_id: int) -> UserEntity: 
+    def get_user_by_id(self, user_id: int) -> UserEntity: 
         user = self.repository.get_by_id(user_id)
         if not user:
-            raise NotFoundError("Пользователь с таким ID не найден")
+            raise NotFoundError(f"Пользователь с ID {user_id} не найден")
         return user

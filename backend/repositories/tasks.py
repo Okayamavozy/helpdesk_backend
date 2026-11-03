@@ -1,13 +1,13 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend.models.tasks import TaskEntity, TaskStatuses
+from backend.models.tasks import TaskEntity, TaskStatuses, TaskCategories
 
-class SqlAlchemyUserRepository:
+class SqlAlchemyTaskRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def get_all(self) -> list[TaskEntity] | None:
+    def get_all(self) -> list[TaskEntity]:
         result = select(TaskEntity).order_by(TaskEntity.id)
         return list(self.session.scalars(result).all())
 
@@ -25,3 +25,15 @@ class SqlAlchemyUserRepository:
 
     def get_statuses(self) -> list[TaskStatuses]:
         return list(TaskStatuses)
+
+    def create(self, title: str, description: str, category: TaskCategories, author_id: int) -> TaskEntity:
+        task = TaskEntity(
+            title = title,
+            description = description,
+            status = TaskStatuses.TODO,
+            category = category,
+            author_id = author_id
+        )
+        self.session.add(task)
+        self.session.flush()
+        return task
