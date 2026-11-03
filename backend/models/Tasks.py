@@ -17,7 +17,7 @@ class TaskCategories(str, Enum):
     OTHER = "other"
 
 
-class TasksEntity(Base):
+class TaskEntity(Base):
     __tablename__ = "tasks"
 
     id: Mapped[int] = mapped_column(primary_key=True)

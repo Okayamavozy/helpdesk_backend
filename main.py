@@ -4,8 +4,8 @@ import uvicorn
 
 from backend.config.database import Base, engine
 
-from backend.models.Tasks import TasksEntity
-from backend.models.Users import UserEntity
+from backend.models.tasks import TaskEntity
+from backend.models.users import UserEntity
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
