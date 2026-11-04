@@ -34,3 +34,9 @@ class TaskService:
 
     def return_categories(self) -> dict[str, str]:
         return { category.name: category.value for category in TaskCategories}
+
+    def delete_task(self, task_id: int) -> dict[str, str]:
+        if not self.repository.delete(task_id):
+            raise NotFoundError(f"Задача {task_id} не найдена")
+        return {"message": f"Задача {task_id} удалена"}
+        

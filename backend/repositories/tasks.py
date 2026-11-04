@@ -17,7 +17,7 @@ class SqlAlchemyTaskRepository:
 
     def change_status(self, task_id: int, new_status: TaskStatuses) -> TaskEntity | None:
         task = self.get_by_id(task_id)
-        if not task:
+        if task is None:
             return None
         task.status = new_status
         self.session.flush()
@@ -37,3 +37,11 @@ class SqlAlchemyTaskRepository:
         self.session.add(task)
         self.session.flush()
         return task
+
+    def delete(self, task_id: int) -> bool:
+        task = self.get_by_id(task_id)
+        if task is None:
+            return False
+        self.session.delete(task)
+        self.session.flush()
+        return True

@@ -34,3 +34,8 @@ def get_categories(service: TaskServiceDep):
 def get_task_by_id(task_id: int, service: TaskServiceDep):
     """Получить задачу по ее ID"""
     return service.get_task_by_id(task_id)
+
+@router.delete("/{task_id}", response_model=dict[str, str])
+def delete_task(task_id: int, service: TaskServiceDep):
+    """Удалить задачу"""
+    return service.delete_task(task_id)
