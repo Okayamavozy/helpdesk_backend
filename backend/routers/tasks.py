@@ -20,15 +20,15 @@ def get_statuses(service: TaskServiceDep):
     """Получить возможные статусы задачи"""
     return service.return_statuses()
 
-@router.patch("/{task_id}/status/", response_model=ChangeTaskStatusSchema)
-def change_status(task_id: int, new_status: TaskStatuses, service: TaskServiceDep):
-    """Изменить статус задачи"""
-    return service.change_status(task_id, new_status)
-
 @router.get("/categories", response_model=dict[str, str])
 def get_categories(service: TaskServiceDep):
     """Получить возможные категории задачи"""
     return service.return_categories()
+
+@router.patch("/{task_id}/status/", response_model=ChangeTaskStatusSchema)
+def change_status(task_id: int, new_status: TaskStatuses, service: TaskServiceDep):
+    """Изменить статус задачи"""
+    return service.change_status(task_id, new_status)
 
 @router.get("/{task_id}", response_model=TaskResponseSchema)
 def get_task_by_id(task_id: int, service: TaskServiceDep):
