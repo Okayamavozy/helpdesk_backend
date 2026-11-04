@@ -19,3 +19,8 @@ def get_all_users(service: UserServiceDep):
 def get_user_by_id(user_id: int, service: UserServiceDep):
     """Получить пользователя по его ID"""
     return service.get_user_by_id(user_id)
+
+@router.delete("/{user_id}", response_model=dict[str, str])
+def delete_user(user_id: int, service: UserServiceDep):
+    """Удалить пользователя"""
+    return service.delete_user(user_id)
