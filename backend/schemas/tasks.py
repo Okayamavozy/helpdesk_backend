@@ -13,7 +13,6 @@ class CreateTaskSchema(BaseModel):
 
 
 class ChangeTaskStatusSchema(BaseModel):
-    task_id: int = Field(gt=0)
     status: TaskStatuses
 
     model_config = base_config
