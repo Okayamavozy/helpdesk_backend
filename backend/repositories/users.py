@@ -23,3 +23,11 @@ class SqlAlchemyUserRepository:
         self.session.add(user)
         self.session.flush()
         return user
+
+    def delete(self, user_id: int) -> bool:
+        user = self.get_by_id(user_id)
+        if user is None:
+            return False
+        self.session.delete(user)
+        self.session.flush()
+        return True

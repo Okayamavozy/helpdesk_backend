@@ -22,3 +22,8 @@ class UserService:
         if not user:
             raise NotFoundError(f"Пользователь с ID {user_id} не найден")
         return user
+
+    def delete_user(self, user_id: int) -> dict[str, str]:
+        if not self.repository.delete(user_id):
+            raise NotFoundError(f"Пользователь {user_id} не найден")
+        return {"message": "Пользователь удален"}
