@@ -3,7 +3,7 @@ from backend.models.tasks import TaskStatuses
 from backend.schemas.tasks import CreateTaskSchema, TaskResponseSchema, ChangeTaskStatusSchema
 from backend.dependencies.deps import TaskServiceDep
 
-router = APIRouter(prefix="/tasks", tags=["Tasks"])
+router = APIRouter(prefix="/api/v1/tasks", tags=["Tasks"])
 
 @router.post("", response_model=CreateTaskSchema, status_code=status.HTTP_201_CREATED)
 def create_task(schema: CreateTaskSchema, service: TaskServiceDep):

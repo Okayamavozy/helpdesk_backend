@@ -2,7 +2,7 @@ from fastapi import APIRouter, status
 from backend.schemas.users import CreateUserSchema, UserResponseSchema
 from backend.dependencies.deps import UserServiceDep
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/api/v1/users", tags=["Users"])
 
 
 @router.post("", response_model=UserResponseSchema, status_code=status.HTTP_201_CREATED)
