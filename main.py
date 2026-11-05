@@ -15,9 +15,10 @@ from backend.middlewares.middleware import ExceptionHandlerMiddleware
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(engine)
-    print("Таблицы успешно созданы")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     yield
+    await engine.dispose()
 
 app = FastAPI(title="HelpDeskAPI", lifespan=lifespan)
 

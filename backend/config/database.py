@@ -1,6 +1,6 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from dotenv import load_dotenv
 
@@ -11,18 +11,18 @@ db_url = os.getenv("DATABASE_URL")
 if db_url is None:
     raise RuntimeError("Переменная окружения не задана")
 
-engine = create_engine(db_url)
-sessionLocal = sessionmaker(engine)
+engine = create_async_engine(db_url)
+sessionLocal = async_sessionmaker(engine)
 
 class Base(DeclarativeBase):
     pass
 
 
-def get_session():
-    with sessionLocal() as session:
+async def get_session():
+    async with sessionLocal() as session:
         try:
             yield session
-            session.commit()
+            await session.commit()
         except Exception:
-            session.rollback()
+            await session.rollback()
             raise

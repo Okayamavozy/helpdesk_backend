@@ -1,32 +1,31 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.models.tasks import TaskEntity, TaskStatuses, TaskCategories
 
-class SqlAlchemyTaskRepository:
-    def __init__(self, session: Session) -> None:
+from backend.interfaces.tasks import ITaskRepository
+
+class SqlAlchemyTaskRepository(ITaskRepository):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    def get_all(self) -> list[TaskEntity]:
+    async def get_all(self) -> list[TaskEntity]:
         result = select(TaskEntity).order_by(TaskEntity.id)
-        return list(self.session.scalars(result).all())
+        result = await self.session.scalars(result)
+        return list(result.all())
 
-    def get_by_id(self, task_id: int) -> TaskEntity | None:
-        result = select(TaskEntity).where(TaskEntity.id == task_id)
-        return self.session.scalars(result).one_or_none()
+    async def get_by_id(self, task_id: int) -> TaskEntity | None:
+        return await self.session.get(TaskEntity, task_id)
 
-    def change_status(self, task_id: int, new_status: TaskStatuses) -> TaskEntity | None:
-        task = self.get_by_id(task_id)
+    async def change_status(self, task_id: int, new_status: TaskStatuses) -> TaskEntity | None:
+        task = await self.get_by_id(task_id)
         if task is None:
             return None
         task.status = new_status
-        self.session.flush()
+        await self.session.flush()
         return task
 
-    def get_statuses(self) -> list[TaskStatuses]:
-        return list(TaskStatuses)
-
-    def create(self, title: str, description: str, category: TaskCategories, author_id: int) -> TaskEntity:
+    async def create(self, title: str, description: str, category: TaskCategories, author_id: int) -> TaskEntity:
         task = TaskEntity(
             title = title,
             description = description,
@@ -35,13 +34,13 @@ class SqlAlchemyTaskRepository:
             author_id = author_id
         )
         self.session.add(task)
-        self.session.flush()
+        await self.session.flush()
         return task
 
-    def delete(self, task_id: int) -> bool:
-        task = self.get_by_id(task_id)
+    async def delete(self, task_id: int) -> bool:
+        task = await self.get_by_id(task_id)
         if task is None:
             return False
-        self.session.delete(task)
-        self.session.flush()
+        await self.session.delete(task)
+        await self.session.flush()
         return True
