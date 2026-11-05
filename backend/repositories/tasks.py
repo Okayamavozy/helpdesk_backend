@@ -10,8 +10,8 @@ class SqlAlchemyTaskRepository(ITaskRepository):
         self.session = session
 
     async def get_all(self) -> list[TaskEntity]:
-        result = select(TaskEntity).order_by(TaskEntity.id)
-        result = await self.session.scalars(result)
+        stmt = select(TaskEntity).order_by(TaskEntity.id)
+        result = await self.session.scalars(stmt)
         return list(result.all())
 
     async def get_by_id(self, task_id: int) -> TaskEntity | None:
